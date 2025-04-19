@@ -29,7 +29,7 @@ const ProductDetailsPage = async (props: {
               </p>
               <h1 className="h3-bold">{product.name}</h1>
               <p>
-                {product.rating} of {product.numReviews} Reviews
+                {toString(product.rating)} of {toString(product.numReviews)} Reviews
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <ProductPrice
