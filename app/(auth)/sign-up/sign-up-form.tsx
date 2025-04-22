@@ -34,31 +34,35 @@ const SignUpForm = () => {
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
       <div className="space-y-6">
         <div>
-          <Label htmlFor="email" className="mb-2">Name</Label>
+          <Label htmlFor="email" className="mb-2">
+            Name
+          </Label>
           <Input
             id="name"
             name="name"
             type="text"
-            required
             autoComplete="name"
             defaultValue={signUpDefaultValues.name}
           />
         </div>
 
         <div>
-          <Label htmlFor="email" className="mb-2">Email</Label>
+          <Label htmlFor="email" className="mb-2">
+            Email
+          </Label>
           <Input
             id="email"
             name="email"
-            type="email"
-            required
+            type="text"
             autoComplete="email"
             defaultValue={signUpDefaultValues.email}
           />
         </div>
 
         <div>
-          <Label htmlFor="password" className="mb-2">Password</Label>
+          <Label htmlFor="password" className="mb-2">
+            Password
+          </Label>
           <Input
             id="password"
             name="password"
@@ -70,7 +74,9 @@ const SignUpForm = () => {
         </div>
 
         <div>
-          <Label htmlFor="confirmPassword" className="mb-2">Confirm Password</Label>
+          <Label htmlFor="confirmPassword" className="mb-2">
+            Confirm Password
+          </Label>
           <Input
             id="confirmPassword"
             name="confirmPassword"
