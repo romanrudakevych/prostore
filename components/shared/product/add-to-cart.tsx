@@ -16,7 +16,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
     }
 
     // Handle success add to cart
-    toast(`${item.name} added to cart`);
+    toast(res.message);
   };
 
   return (
