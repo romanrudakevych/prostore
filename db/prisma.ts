@@ -28,17 +28,82 @@
 //         },
 //       },
 //     },
+//     cart: {
+//       itemsPrice: {
+//         needs: { itemsPrice: true },
+//         compute(cart) {
+//           return cart.itemsPrice.toString();
+//         },
+//       },
+
+//       shippingPrice: {
+//         needs: { shippingPrice: true },
+//         compute(cart) {
+//           return cart.shippingPrice.toString();
+//         },
+//       },
+
+//       taxPrice: {
+//         needs: { taxPrice: true },
+//         compute(cart) {
+//           return cart.taxPrice.toString();
+//         },
+//       },
+
+//       totalPrice: {
+//         needs: { totalPrice: true },
+//         compute(cart) {
+//           return cart.totalPrice.toString();
+//         },
+//       },
+//     },
+
+//     order: {
+//       itemsPrice: {
+//         needs: { itemsPrice: true },
+//         compute(cart) {
+//           return cart.itemsPrice.toString();
+//         },
+//       },
+
+//       shippingPrice: {
+//         needs: { shippingPrice: true },
+//         compute(cart) {
+//           return cart.shippingPrice.toString();
+//         },
+//       },
+
+//       taxPrice: {
+//         needs: { taxPrice: true },
+//         compute(cart) {
+//           return cart.taxPrice.toString();
+//         },
+//       },
+
+//       totalPrice: {
+//         needs: { totalPrice: true },
+//         compute(cart) {
+//           return cart.totalPrice.toString();
+//         },
+//       },
+//     },
+
+//     orderItem: {
+//       price: {
+//         compute(cart) {
+//           return cart.price.toString();
+//         },
+//       },
+//     },
 //   },
 // });
 
-
-
 // New version of usage of Prisma adapter
 
-import { PrismaClient } from "@prisma/client"
- 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
- 
-export const prisma = globalForPrisma.prisma || new PrismaClient()
- 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+import { PrismaClient } from "@prisma/client";
+
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+export const prisma = globalForPrisma.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
