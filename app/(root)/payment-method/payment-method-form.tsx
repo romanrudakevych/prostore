@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { updateUserPaymentMethod } from "@/lib/actions/user.action";
+import { updateUserPaymentMethod } from "@/lib/actions/user.actions";
 
 const PaymentMethodForm = ({
   preferredPaymentMethod,

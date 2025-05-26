@@ -1,10 +1,9 @@
 "use server";
 
-import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { formatError } from "../utils";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
-import { getUserById } from "./user.action";
+import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
 import { CartItem } from "@/types";
@@ -12,14 +11,11 @@ import { CartItem } from "@/types";
 // Create order and create the order items
 export async function createOrder() {
   try {
-    const session = await auth;
-
+    const session = await auth();
     if (!session) throw new Error("User is not authenticated");
 
     const cart = await getMyCart();
-
     const userId = session?.user?.id;
-
     if (!userId) throw new Error("User not found");
 
     const user = await getUserById(userId);
@@ -28,7 +24,7 @@ export async function createOrder() {
       return {
         success: false,
         message: "Your cart is empty",
-        redirectTo: ".cart",
+        redirectTo: "/cart",
       };
     }
 
@@ -63,9 +59,7 @@ export async function createOrder() {
     const insertedOrderId = await prisma.$transaction(async (tx) => {
       // Create order
       const insertedOrder = await tx.order.create({ data: order });
-
       // Create order items from the cart items
-
       for (const item of cart.items as CartItem[]) {
         await tx.orderItem.create({
           data: {
@@ -75,7 +69,6 @@ export async function createOrder() {
           },
         });
       }
-
       // Clear cart
       await tx.cart.update({
         where: { id: cart.id },
