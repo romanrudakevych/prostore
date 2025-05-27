@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { updateUserAddress } from "@/lib/actions/user.action";
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const router = useRouter();
