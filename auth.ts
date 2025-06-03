@@ -116,6 +116,12 @@ export const config = {
           }
         }
       }
+
+      // Handle sessions updates
+      if (session?.user.name && trigger === "update") {
+        token.name = session.user.name;
+      }
+
       return token;
     },
     authorized({ request, auth }: any) {
