@@ -6,7 +6,7 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
-import { CartItem } from "@/types";
+import { CartItem, PaymentResult } from "@/types";
 import { convertToPlainObject, formatError } from "../utils";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
@@ -232,17 +232,80 @@ export async function deleteOrder(id: string) {
   }
 }
 
-// // Update COD order to paid
-// export async function updateOrderToPaidCOD(orderId: string) {
-//   try {
-//     await updateOrderToPaid({ orderId });
-//     revalidatePath(`/order/${orderId}`);
+// Update order to paid
+export async function updateOrderToPaid({
+  orderId,
+  paymentResult,
+}: {
+  orderId: string;
+  paymentResult?: PaymentResult;
+}) {
+  // Get order from database
+  const order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      orderitems: true,
+    },
+  });
 
-//     return { success: true, message: "Order marked as paid" };
-//   } catch (error) {
-//     return { success: false, message: formatError(error) };
-//   }
-// }
+  if (!order) throw new Error("Order not found");
+
+  if (order.isPaid) throw new Error("Order is already paid");
+
+  // Transaction to update order and account for product stock
+  await prisma.$transaction(async (tx) => {
+    // Iterate over products and update stock
+    for (const item of order.orderitems) {
+      await tx.product.update({
+        where: { id: item.productId },
+        data: { stock: { increment: -item.qty } },
+      });
+    }
+
+    // Set the order to paid
+    await tx.order.update({
+      where: { id: orderId },
+      data: {
+        isPaid: true,
+        paidAt: new Date(),
+        paymentResult,
+      },
+    });
+  });
+
+  // Get updated order after transaction
+  const updatedOrder = await prisma.order.findFirst({
+    where: { id: orderId },
+    include: {
+      orderitems: true,
+      user: { select: { name: true, email: true } },
+    },
+  });
+
+  if (!updatedOrder) throw new Error("Order not found");
+
+  // sendPurchaseReceipt({
+  //   order: {
+  //     ...updatedOrder,
+  //     shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+  //     paymentResult: updatedOrder.paymentResult as PaymentResult,
+  //   },
+  // });
+}
+
+// // Update COD order to paid
+export async function updateOrderToPaidCOD(orderId: string) {
+  try {
+    // await updateOrderToPaid({ orderId });
+    revalidatePath(`/order/${orderId}`);
+
+    return { success: true, message: "Order marked as paid" };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
 
 // Update COD order to delivered
 export async function deliverOrder(orderId: string) {
