@@ -87,7 +87,7 @@ const ProductForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
-        <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex flex-col items-baseline md:flex-row gap-5">
           {/* Name */}
           <FormField
             control={form.control}
@@ -111,7 +111,6 @@ const ProductForm = ({
           />
 
           {/* Slug */}
-
           <FormField
             control={form.control}
             name="slug"
