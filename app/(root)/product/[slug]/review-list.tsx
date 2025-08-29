@@ -3,6 +3,7 @@
 import { Review } from "@/types";
 import { useState } from "react";
 import Link from "next/link";
+import ReviewForm from "./review-form";
 
 const ReviewList = ({
   userId,
@@ -20,7 +21,7 @@ const ReviewList = ({
       {reviews.length === 0 && <div>No reviews yet</div>}
 
       {userId ? (
-        <>{/* REVIEW FORM HERE */}</>
+        <ReviewForm userId={userId} productId={productId} />
       ) : (
         <div>
           Please
@@ -34,9 +35,7 @@ const ReviewList = ({
         </div>
       )}
 
-      <div className="flex flex-col gap-3">
-        {/* REVIEWS HERE */}
-      </div>
+      <div className="flex flex-col gap-3">{/* REVIEWS HERE */}</div>
     </div>
   );
 };
